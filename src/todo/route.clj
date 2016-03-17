@@ -13,6 +13,7 @@
 (defroutes ^:private www-routes
   "Application routes"
   (GET "/" request handler/index-get)
+  (GET "/about" request handler/about-get)
   (route/not-found (response/not-found "<html><body><h1>Not Found</h1></body></html>")))
 
 (defroutes routes
