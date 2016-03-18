@@ -1,15 +1,10 @@
 (ns todo.handler
-  (:require [ring.util.response :as response]))
-
-(defn- html-response
-  [relative-path]
-  (-> (response/resource-response relative-path {:root "html"})
-      (response/content-type "text/html")))
+  (:require [todo.html :as html]))
 
 (defn index-get
   []
-  (html-response "index.html"))
+  (html/index))
 
 (defn about-get
   []
-  (html-response "about.html"))
+  (html/about))
