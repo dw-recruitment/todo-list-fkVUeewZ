@@ -1,6 +1,7 @@
 (defproject todo "0.1.0-SNAPSHOT"
   :description "Candidate assignment for a democracy.works job application"
-  :dependencies [[compojure "1.5.0"]
+  :dependencies [[com.datomic/datomic-free "0.9.5350"]
+                 [compojure "1.5.0"]
                  [org.immutant/web "2.1.3"]
                  [org.clojure/clojure "1.8.0"]
                  [ring/ring-core "1.4.0"]

@@ -7,9 +7,9 @@
       (response/content-type "text/html")))
 
 (defn index-get
-  [_]
+  []
   (html-response "index.html"))
 
 (defn about-get
-  [_]
+  []
   (html-response "about.html"))

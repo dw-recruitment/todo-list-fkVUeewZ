@@ -1,0 +1,18 @@
+[{:db/id #db/id[:db.part/db]
+  :db/ident :item/text
+  :db/valueType :db.type/string
+  :db/cardinality :db.cardinality/one
+  :db/fulltext true
+  :db/doc "A to-do list item’s text"
+  :db.install/_attribute :db.part/db}
+
+ {:db/id #db/id[:db.part/db]
+  :db/ident :item/state
+  :db/valueType :db.type/ref
+  :db/cardinality :db.cardinality/one
+  :db/doc "A to-do list item’s doneness state"
+  :db.install/_attribute :db.part/db}
+
+ ; todo/state enums
+ [:db/add #db/id[:db.part/user] :db/ident :item.state/todo]
+ [:db/add #db/id[:db.part/user] :db/ident :item.state/done]]
