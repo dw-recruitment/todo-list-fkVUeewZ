@@ -1,0 +1,8 @@
+[{:text "Rule the world."
+  :state :todo}
+ {:text "Pick up the milk"
+  :state :done}
+ {:text "Get a haircut"
+  :state :done}
+ {:text "Deeply understand Datomic"
+  :state :todo}]
