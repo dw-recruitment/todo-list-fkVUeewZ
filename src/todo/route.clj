@@ -12,9 +12,9 @@
 
 (defn- www-routes
   "Create non-API web application routes"
-  [system]
+  [{conn :datomic}]
   (routes
-    (GET "/" [] (handler/index-get))
+    (GET "/" [] (handler/index-get conn))
     (GET "/about" [] (handler/about-get))
     (route/not-found (response/not-found "<html><body><h1>Not Found</h1></body></html>"))))
 

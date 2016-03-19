@@ -1,5 +1,10 @@
 (ns todo.html
-  (:require [hiccup.page :refer [html5 include-css]]))
+  (:require [hiccup.core :refer [h]]
+            [hiccup.page :refer [html5 include-css]]))
+
+(def state->html
+  {:done "Yes"
+   :todo "No"})
 
 (defn application
   [title & content]
@@ -20,13 +25,21 @@
            content]]))
 
 (defn index
-  []
+  [items]
   (application "democracy.works TODO assignment - Home"
-                [:h1
-                 [:a {:href "http://democracy.works/"} "democracy.works"]
-                 " TODO application"]
-                [:img.center.pure-img {:src "/public/assets/under-construction.gif"
-                                       :alt "Broken image icon falling on worker"}]))
+               [:h1
+                [:a {:href "http://democracy.works/"} "democracy.works"]
+                " TODO application"]
+               [:table.pure-table
+                [:caption "All TODO items"]
+                [:thead
+                 [:th "Item"]
+                 [:th "Done?"]]
+                [:tbody
+                  (for [i items]
+                    [:tr
+                     [:td (h (:text i))]
+                     [:td (h (state->html (:state i)))]])]]))
 
 (defn about
   []

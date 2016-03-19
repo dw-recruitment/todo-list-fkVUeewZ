@@ -1,9 +1,10 @@
 (ns todo.handler
-  (:require [todo.html :as html]))
+  (:require [todo.db :as db]
+            [todo.html :as html]))
 
 (defn index-get
-  []
-  (html/index))
+  [conn]
+  (html/index (db/items conn)))
 
 (defn about-get
   []

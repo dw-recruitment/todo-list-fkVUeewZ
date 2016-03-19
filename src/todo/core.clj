@@ -4,6 +4,14 @@
             [todo.route :as route]
             [immutant.web :as web]))
 
+(defn ->system
+  "Create and initialize stateful components of the system.
+
+  In a more complex application, this would be replaced with something like
+  https://github.com/stuartsierra/component"
+  [db-uri]
+  {:datomic (d/connect db-uri)})
+
 (defn -main
   [& args]
   ; Some of these could use environment variables but for simplicity we’ll
@@ -14,8 +22,7 @@
         dev-mode? (not (System/getenv "LEIN_NO_DEV"))]
     ; Create the Datomic database anew since it is in-memory.
     (d/create-database db-uri)
-    (let [conn (d/connect db-uri)
-          system {:datomic conn}]
+    (let [{conn :datomic :as system} (->system db-uri)]
       (db/install-schema! conn (db/read-schema schema-path))
       (doseq [d (db/read-data data-path)]
         (db/create-item! conn d))
