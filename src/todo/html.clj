@@ -41,12 +41,19 @@
                 [:caption "All TODO items"]
                 [:thead
                  [:th "Item"]
-                 [:th "Done?"]]
+                 [:th "Done?"]
+                 [:th]]
                 [:tbody
                   (for [i items]
-                    [:tr
-                     [:td (h (:text i))]
-                     [:td (h (state->html (:state i)))]])]]))
+                    [:tr {:data-item-id (str (:id i))
+                          :data-item-state (name (:state i))}
+                     [:td {:class (if (= (:state i) :done) "item-done" nil)}
+                          (h (:text i))]
+                     [:td (h (state->html (:state i)))]
+                     [:td [:button {:class (if (= (:state i) :done)
+                                             "pure-button pure-button-default"
+                                             "pure-button pure-button-primary")}
+                                   (if (= (:state i) :done) "Undo" "Done")]]])]]))
 
 (defn about
   []

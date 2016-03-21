@@ -20,3 +20,7 @@ table {
 tr.pending {
   opacity: 0.5;
 }
+
+td.item-done {
+  text-decoration: line-through;
+}

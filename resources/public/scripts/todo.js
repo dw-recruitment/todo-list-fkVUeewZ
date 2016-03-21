@@ -1,16 +1,61 @@
 $(function() {
   'use strict';
 
+  $('#todo-items').on('click', 'button', function(ev) {
+    var $button = $(ev.currentTarget);
+    var $tr = $button.parents('tr');
+
+    var itemId = $tr.data('itemId');
+    var state = $tr.data('itemState');
+
+    var newState = state == 'todo' ? 'done' : 'todo';
+
+    $.ajax({
+      type: 'PUT',
+      url: '/api/items/' + itemId,
+      data: {
+        state: newState
+      },
+      success: function(data) {
+        if (newState == 'todo') {
+          $button.removeClass('pure-button-default');
+          $button.addClass('pure-button-primary');
+          $button.text('Done');
+          $tr.data('itemState', 'todo');
+          $tr.find('td:nth-child(1)').removeClass('item-done');
+          $tr.find('td:nth-child(2)').text('No');
+        } else {
+          $button.removeClass('pure-button-primary');
+          $button.addClass('pure-button-default');
+          $button.text('Undo');
+          $tr.data('itemState', 'done');
+          $tr.find('td:nth-child(1)').addClass('item-done');
+          $tr.find('td:nth-child(2)').text('Yes');
+        }
+      },
+      error: function() {
+        alert('There was an error changing the state of the item.');
+      }
+    });
+  });
+});
+
+// Add item
+$(function() {
+  'use strict';
+
   $('#item-create').on('submit', function(ev) {
     ev.preventDefault();
 
     var $form = $(this);
 
     var $tr = $(
-        '<tr class="pending"><td>'
+        '<tr class="pending" data-item-state="todo"><td>'
         + $form.find('input[name="text"]').val()
         + '</td><td>'
-        + 'No</td></tr>'
+        + 'No</td><td>'
+        + '<button class="pure-button pure-button-primary">Done</button>'
+        + '</td></tr>'
     );
 
     $tr.appendTo('#todo-items>tbody');
@@ -19,9 +64,10 @@ $(function() {
       type: "POST",
       url: $form.attr('action'),
       data: $form.serialize(),
-      success: function() {
+      success: function(data) {
         $form.find('input[name="text"]').val('');
         $tr.removeClass('pending');
+        $tr.attr('data-item-id', data);
       },
       error: function() {
         alert("Sorry, there was an error adding that item.");

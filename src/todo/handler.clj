@@ -12,4 +12,8 @@
 
 (defn items-post
   [{params :params} conn]
-  (db/create-item! conn (db/->Item (:text params) :todo)))
+  (str (db/create-item! conn (db/->Item nil (:text params) :todo))))
+
+(defn item-put
+  [{params :params} conn]
+  (str (db/update-item-state! conn (Long/parseLong (:id params)) (keyword (:state params)))))
