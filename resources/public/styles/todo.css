@@ -16,3 +16,7 @@ img.center {
 table {
   width: 100%;
 }
+
+tr.pending {
+  opacity: 0.5;
+}

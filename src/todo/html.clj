@@ -23,7 +23,8 @@
              [:li.pure-menu-item
               [:a.pure-menu-link {:href "/about"} "About"]]]]
            content]
-          (include-js "/public/vendor/jquery/jquery-2.2.2.min.js")]))
+          (include-js "/public/vendor/jquery/jquery-2.2.2.min.js")
+          (include-js "/public/scripts/todo.js")]))
 
 (defn index
   [items]
@@ -31,7 +32,12 @@
                [:h1
                 [:a {:href "http://democracy.works/"} "democracy.works"]
                 " TODO application"]
-               [:table.pure-table
+               [:form#item-create.pure-form {:type "POST" :action "/api/items/"}
+                [:fieldset
+                 [:legend "What do you need to get done?"]
+                 [:input {:type "text" :placeholder "Make a beer run" :name "text"}]
+                 [:button.pure-button.pure-primary {:type "submit"} "Add TODO item"]]]
+               [:table#todo-items.pure-table
                 [:caption "All TODO items"]
                 [:thead
                  [:th "Item"]

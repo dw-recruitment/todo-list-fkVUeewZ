@@ -1,7 +1,8 @@
 (ns todo.route
-  (:require [compojure.core :refer [GET context defroutes routes]]
+  (:require [compojure.core :refer [GET POST context defroutes routes]]
             [compojure.route :as route]
-            [ring.middleware.defaults :refer [site-defaults
+            [ring.middleware.defaults :refer [api-defaults
+                                              site-defaults
                                               wrap-defaults]]
             [ring.util.response :as response]
             [todo.handler :as handler]))
@@ -9,6 +10,11 @@
 (defroutes ^:private resource-routes
   "Public resource (asset) routes"
   (route/resources "/"))
+
+(defn- api-routes
+  [{conn :datomic}]
+  (routes
+    (POST "/items/" request (handler/items-post request conn))))
 
 (defn- www-routes
   "Create non-API web application routes"
@@ -23,5 +29,8 @@
   [system]
   (routes
     (context "/public" [] resource-routes)
+    (context "/api" []
+      (-> (api-routes system)
+          (wrap-defaults api-defaults)))
     (-> (www-routes system)
         (wrap-defaults site-defaults))))

@@ -9,3 +9,7 @@
 (defn about-get
   []
   (html/about))
+
+(defn items-post
+  [{params :params} conn]
+  (db/create-item! conn (db/->Item (:text params) :todo)))
