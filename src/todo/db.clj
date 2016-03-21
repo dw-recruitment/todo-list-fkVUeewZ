@@ -58,3 +58,10 @@
              :item/state {:db/ident (item-state->datomic new-state)}}]]
     @(d/transact conn tx)
     id))
+
+(defn delete-item!
+  "Deletes (retracts) a to-do list item from the database."
+  [conn id]
+  (let [tx [[:db.fn/retractEntity id]]]
+    @(d/transact conn tx)
+    id))

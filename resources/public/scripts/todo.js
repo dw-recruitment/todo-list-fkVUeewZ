@@ -1,7 +1,8 @@
+// Item state change
 $(function() {
   'use strict';
 
-  $('#todo-items').on('click', 'button', function(ev) {
+  $('#todo-items').on('click', 'button.item-state-change', function(ev) {
     var $button = $(ev.currentTarget);
     var $tr = $button.parents('tr');
 
@@ -40,6 +41,29 @@ $(function() {
   });
 });
 
+// Item delete
+$(function() {
+  'use strict';
+
+  $('#todo-items').on('click', 'button.item-delete', function(ev) {
+    var $button = $(ev.currentTarget);
+    var $tr = $button.parents('tr');
+
+    var itemId = $tr.data('itemId');
+
+    $.ajax({
+      type: 'DELETE',
+      url: '/api/items/' + itemId,
+      success: function(data) {
+        $tr.remove();
+      },
+      error: function() {
+        alert('There was an error deleting the item.');
+      }
+    });
+  });
+});
+
 // Add item
 $(function() {
   'use strict';
@@ -54,7 +78,8 @@ $(function() {
         + $form.find('input[name="text"]').val()
         + '</td><td>'
         + 'No</td><td>'
-        + '<button class="pure-button pure-button-primary">Done</button>'
+        + '<button class="pure-button pure-button-primary item-state-change">Done</button>'
+        + '&nbsp;<button class="pure-button pure-button-default item-delete">Delete</button>'
         + '</td></tr>'
     );
 

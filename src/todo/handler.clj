@@ -17,3 +17,7 @@
 (defn item-put
   [{params :params} conn]
   (str (db/update-item-state! conn (Long/parseLong (:id params)) (keyword (:state params)))))
+
+(defn item-delete
+  [{params :params} conn]
+  (str (db/delete-item! conn (Long/parseLong (:id params)))))

@@ -1,5 +1,6 @@
 (ns todo.route
-  (:require [compojure.core :refer [GET POST PUT context defroutes routes]]
+  (:require [compojure.core :refer [GET POST PUT DELETE context defroutes
+                                    routes]]
             [compojure.route :as route]
             [ring.middleware.defaults :refer [api-defaults
                                               site-defaults
@@ -15,7 +16,8 @@
   [{conn :datomic}]
   (routes
     (POST "/items/" request (handler/items-post request conn))
-    (PUT "/items/:id" request (handler/item-put request conn))))
+    (PUT "/items/:id" request (handler/item-put request conn))
+    (DELETE "/items/:id" request (handler/item-delete request conn))))
 
 (defn- www-routes
   "Create non-API web application routes"

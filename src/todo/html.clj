@@ -51,9 +51,11 @@
                           (h (:text i))]
                      [:td (h (state->html (:state i)))]
                      [:td [:button {:class (if (= (:state i) :done)
-                                             "pure-button pure-button-default"
-                                             "pure-button pure-button-primary")}
-                                   (if (= (:state i) :done) "Undo" "Done")]]])]]))
+                                             "pure-button pure-button-default item-state-change"
+                                             "pure-button pure-button-primary item-state-change")}
+                                   (if (= (:state i) :done) "Undo" "Done")]
+                          "&nbsp;"
+                          [:button.pure-button.pure-button-default.item-delete "Delete"]]])]]))
 
 (defn about
   []
