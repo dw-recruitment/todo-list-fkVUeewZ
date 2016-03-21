@@ -1,6 +1,6 @@
 (ns todo.html
   (:require [hiccup.core :refer [h]]
-            [hiccup.page :refer [html5 include-css]]))
+            [hiccup.page :refer [html5 include-css include-js]]))
 
 (def state->html
   {:done "Yes"
@@ -22,7 +22,8 @@
             [:ul.pure-menu-list
              [:li.pure-menu-item
               [:a.pure-menu-link {:href "/about"} "About"]]]]
-           content]]))
+           content]
+          (include-js "/public/vendor/jquery/jquery-2.2.2.min.js")]))
 
 (defn index
   [items]
