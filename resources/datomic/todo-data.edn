@@ -1,8 +1,19 @@
-[{:text "Rule the world."
-  :state :todo}
- {:text "Pick up the milk"
-  :state :done}
- {:text "Get a haircut"
-  :state :done}
- {:text "Deeply understand Datomic"
-  :state :todo}]
+[{:db/id #db/id[:db.part/user -1]
+  :list/name "Your first list"}
+
+ {:db/id #db/id[:db.part/user]
+  :item/text "Rule the world"
+  :item/state :item.state/todo
+  :item/list #db/id[:db.part/user -1]}
+ {:db/id #db/id[:db.part/user]
+  :item/text "Pick up the milk"
+  :item/state :item.state/done
+  :item/list #db/id[:db.part/user -1]}
+ {:db/id #db/id[:db.part/user]
+  :item/text "Get a haircut"
+  :item/state :item.state/done
+  :item/list #db/id[:db.part/user -1]}
+ {:db/id #db/id[:db.part/user]
+  :item/text "Deeply understand Datomic"
+  :item/state :item.state/todo
+  :item/list #db/id[:db.part/user -1]}]
