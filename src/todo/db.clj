@@ -12,23 +12,12 @@
   {:todo :item.state/todo
    :done :item.state/done})
 
-(defn read-schema
-  "Loads the schema EDN file relative to the resource path."
+(defn read-datomic-edn
+  "Loads a datomic EDN file relative to the resource path."
   [path]
-  (-> path io/resource io/reader Util/readAll))
+  (->> path io/resource slurp (edn/read-string {:readers *data-readers*})))
 
-(defn read-data
-  "Loads the data EDN file relative to the resource path."
-  [path]
-  (-> path io/resource slurp edn/read-string))
 
-(defn install-schema!
-  "Installs the elements of the schema and returns a seq of the return values of
-  transacting each element."
-  [conn schema]
-  (doall
-    (for [s schema]
-      @(d/transact conn s))))
 
 (defn items
   "Retrieve a list of to-do items."
