@@ -27,35 +27,43 @@
           (include-js "/public/scripts/todo.js")]))
 
 (defn index
-  [items]
+  [lists]
   (application "democracy.works TODO assignment - Home"
                [:h1
                 [:a {:href "http://democracy.works/"} "democracy.works"]
                 " TODO application"]
-               [:form#item-create.pure-form {:type "POST" :action "/api/items/"}
+               [:form#list-create.pure-form {:type "POST" :action "/api/lists/"}
                 [:fieldset
-                 [:legend "What do you need to get done?"]
-                 [:input {:type "text" :placeholder "Make a beer run" :name "text"}]
-                 [:button.pure-button.pure-primary {:type "submit"} "Add TODO item"]]]
-               [:table#todo-items.pure-table
-                [:caption "All TODO items"]
-                [:thead
-                 [:th "Item"]
-                 [:th "Done?"]
-                 [:th]]
-                [:tbody
-                  (for [i items]
-                    [:tr {:data-item-id (str (:id i))
-                          :data-item-state (name (:state i))}
-                     [:td {:class (if (= (:state i) :done) "item-done" nil)}
-                          (h (:text i))]
-                     [:td (h (state->html (:state i)))]
-                     [:td [:button {:class (if (= (:state i) :done)
-                                             "pure-button pure-button-default item-state-change"
-                                             "pure-button pure-button-primary item-state-change")}
-                                   (if (= (:state i) :done) "Undo" "Done")]
-                          "&nbsp;"
-                          [:button.pure-button.pure-button-default.item-delete "Delete"]]])]]))
+                 [:input {:type "text" :placeholder "Holiday shopping items" :name "name"}]
+                 "&nbsp;"
+                 [:button.pure-button.pure-primary {:type "submit"} "Add new list"]]]
+               (apply concat
+                 (for [l lists]
+                   [[:table.todo-items.pure-table {:data-list-id (:id l)}
+                    [:caption (h (:name l))]
+                    [:thead
+                     [:th "Item"]
+                     [:th "Done?"]
+                     [:th]]
+                    [:tbody
+                      (for [i (:items l)]
+                        [:tr {:data-item-id (str (:id i))
+                              :data-item-state (name (:state i))}
+                         [:td {:class (if (= (:state i) :done) "item-done" nil)}
+                              (h (:text i))]
+                         [:td (h (state->html (:state i)))]
+                         [:td [:button {:class (if (= (:state i) :done)
+                                                 "pure-button pure-button-default item-state-change"
+                                                 "pure-button pure-button-primary item-state-change")}
+                                       (if (= (:state i) :done) "Undo" "Done")]
+                              "&nbsp;"
+                              [:button.pure-button.pure-button-default.item-delete "Delete"]]])]]
+                   [:form.item-create.pure-form {:type "POST"
+                                                 :action (str "/api/lists/" (:id l) "/items/")}
+                    [:fieldset
+                     [:input {:type "text" :placeholder "Pick up cat food" :name "text"}]
+                     "&nbsp;"
+                     [:button.pure-button.pure-primary {:type "submit"} "Add item"]]]]))))
 
 (defn about
   []

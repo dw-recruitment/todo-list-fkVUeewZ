@@ -15,7 +15,8 @@
 (defn- api-routes
   [{conn :datomic}]
   (routes
-    (POST "/items/" request (handler/items-post request conn))
+    (POST "/lists/" request (handler/lists-post request conn))
+    (POST "/lists/:list-id/items/" request (handler/items-post request conn))
     (PUT "/items/:id" request (handler/item-put request conn))
     (DELETE "/items/:id" request (handler/item-delete request conn))))
 

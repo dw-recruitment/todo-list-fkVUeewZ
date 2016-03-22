@@ -2,7 +2,7 @@
 $(function() {
   'use strict';
 
-  $('#todo-items').on('click', 'button.item-state-change', function(ev) {
+  $('div.main').on('click', 'button.item-state-change', function(ev) {
     var $button = $(ev.currentTarget);
     var $tr = $button.parents('tr');
 
@@ -45,7 +45,7 @@ $(function() {
 $(function() {
   'use strict';
 
-  $('#todo-items').on('click', 'button.item-delete', function(ev) {
+  $('div.main').on('click', 'button.item-delete', function(ev) {
     var $button = $(ev.currentTarget);
     var $tr = $button.parents('tr');
 
@@ -64,14 +64,60 @@ $(function() {
   });
 });
 
+// Add list
+$(function() {
+  'use strict';
+
+  $('#list-create').on('submit', function(ev) {
+    ev.preventDefault();
+
+    var $form = $(this);
+
+    var $table = $(
+        '<table class="pure-table todo-items">'
+        + '<caption>' + $form.find('input[name="name"]').val() + '</caption>'
+        + '<thead><th>Item</th><th>Done?</th><th></th></thead>'
+        + '<tbody></tbody></table>'
+    );
+
+    $table.appendTo($form.parents('div.main'));
+
+    var $tableForm = $(
+        '<form class="pure-form item-create" type="POST">'
+        + '<fieldset>'
+        + '<input type="text" placeholder="Pick up cat food" name="text">'
+        + '&nbsp;'
+        + '<button class="pure-button pure-primary" type="submit">Add item</button>'
+    );
+
+    $tableForm.insertAfter($table);
+
+    $.ajax({
+      type: "POST",
+      url: $form.attr('action'),
+      data: $form.serialize(),
+      success: function(data) {
+        $form.find('input[name="text"]').val('');
+        $table.attr('data-list-id', data);
+        $tableForm.attr('action', '/api/lists/' + data + '/items/');
+      },
+      error: function() {
+        alert('Sorry, there was an error adding that list.');
+        $table.remove();
+        $tableForm.remove();
+      }
+    });
+  });
+});
+
 // Add item
 $(function() {
   'use strict';
 
-  $('#item-create').on('submit', function(ev) {
+  $('div.main').on('submit', '.item-create', function(ev) {
     ev.preventDefault();
 
-    var $form = $(this);
+    var $form = $(ev.currentTarget);
 
     var $tr = $(
         '<tr class="pending" data-item-state="todo"><td>'
@@ -83,7 +129,7 @@ $(function() {
         + '</td></tr>'
     );
 
-    $tr.appendTo('#todo-items>tbody');
+    $tr.appendTo($form.prev('table').find('tbody'));
 
     $.ajax({
       type: "POST",
